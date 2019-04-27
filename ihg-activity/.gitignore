@@ -1,1 +1,4 @@
 ihg-credentials.json
+ihg-activities-*.json
+geckodriver.log
+venv/

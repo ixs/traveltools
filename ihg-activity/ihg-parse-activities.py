@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8
 
+import datetime
 import json
 import pprint
 import sys
@@ -8,12 +9,24 @@ import tabulate
 
 data = json.load(open(sys.argv[1]))
 
+current_year_only = True
 headers = ('Date', 'Description', 'Activity', 'EQP', 'Nights')
 summary = []
 sum = 0
 nights = 0
 
+def is_current(activity):
+    if activity['activityDetails']['checkOutDate'] is not None:
+      if datetime.datetime.strptime(activity['activityDetails']['checkOutDate'], '%Y-%m-%d %H:%M:%S.%f').year < datetime.date.today().year:
+        return False
+    else:
+      if datetime.datetime.strptime(activity['activitySummary']['datePosted'], '%Y-%m-%d %H:%M:%S.%f').year < datetime.date.today().year:
+        return False
+    return True
+
 for a in data['activities']:
+    if current_year_only and not is_current(a):
+        continue
     ad = []
     desc = []
     ad.append(a['activitySummary']['datePosted'].split()[0])
@@ -47,6 +60,8 @@ sum = 0
 nights = 0
 
 for a in data['activities']:
+    if current_year_only and not is_current(a):
+        continue
     hotel_code = a['activityDetails']['hotelMnemonic']
     if hotel_code is not None:
         brand = data['hotel_details'][hotel_code]['hotelInfo']['brandInfo']['brandCode']
