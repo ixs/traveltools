@@ -42,12 +42,12 @@ def login(username, password):
   wait = WebDriverWait(driver, timeout=10)
 
   driver.get(url)
-  time.sleep(5)
+  time.sleep(10)
 
   username_field = driver.find_element_by_name("emailOrPcrNumber")
 #  There are multiple entries with the name pin, use the xpath instead even though it is more error prone
-#  password = driver.find_element_by_name("pin")
-  password_field = driver.find_element_by_xpath('/html/body/div[2]/div/div/div[2]/div[1]/div[2]/form/div/div[1]/div[2]/input')
+#  password_field = driver.find_element_by_name("pin")
+  password_field = driver.find_element_by_xpath('/html/body/div[1]/div/div/div[2]/div[1]/div[2]/form/div/div[1]/div[2]/input')
 
   username_field.clear()
   username_field.send_keys(username)
